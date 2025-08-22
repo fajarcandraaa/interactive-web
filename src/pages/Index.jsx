@@ -1,28 +1,47 @@
-import { useEffect } from "react";
-// import { Button } from "./components/ui/button";
-import { Button } from "../components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
-import { Input } from "../components/ui/input";
-import { Label } from "../components/ui/label";
-import { Textarea } from "../components/ui/textarea";
+import React, { useEffect, useState, Suspense, lazy } from "react";
 import { useToast } from "../hooks/use-toast";
 import Header from "./Header/Header";
-import {
-  MessageSquare,
-  ListChecks,
-  Code2,
-  Rocket,
-  Laptop,
-  Layers3,
-  Palette,
-} from "lucide-react";
+
+// Lazy load non-critical sections so Header paints first
+const Services = lazy(() => import("./Services"));
+const Workflow = lazy(() => import("./Workflow"));
+const Products = lazy(() => import("./Products"));
+const Partners = lazy(() => import("./Partners"));
+const Contact = lazy(() => import("./Contact"));
+const About = lazy(() => import("./About"));
+
+import ScrollToTop from "../components/ScrollToTop";
+import SectionNavigation from "../components/SectionNavigation";
+import SectionNavigationBottom from "../components/SectionNavigationBottom";
 
 const logoSrc = "/lovable-uploads/logo.png";
 
 const Index = () => {
   const { toast } = useToast();
+  const [showRest, setShowRest] = useState(false);
 
   useEffect(() => {
+    // Defer mounting of non-header sections until the browser is idle
+    const idle = (cb) => {
+      if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+        window.requestIdleCallback(cb, { timeout: 1200 });
+      } else {
+        setTimeout(cb, 1); // next tick fallback
+      }
+    };
+    idle(() => setShowRest(true));
+  }, []);
+
+  useEffect(() => {
+    // Load Spline viewer script after mount (non-blocking)
+    if (!document.querySelector("#spline-viewer-script")) {
+      const script = document.createElement("script");
+      script.id = "spline-viewer-script";
+      script.type = "module";
+      script.src = "https://unpkg.com/@splinetool/viewer@1.10.48/build/spline-viewer.js";
+      document.body.appendChild(script);
+    }
+
     const els = document.querySelectorAll("[data-reveal]");
     const io = new IntersectionObserver(
       (entries) => {
@@ -82,163 +101,45 @@ const Index = () => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
       />
 
-      <Header />
+      <div className="fixed inset-0 -z-10 pointer-events-none opacity-95">
+        <img className='w-full h-full object-cover' src="/img/assets/BG-1.png" alt="" />
+      </div>
+      <main className="bg-black bg-opacity-90 flex flex-col justify-center items-center">
+        {/* Header paints immediately */}
+        <Header />
 
-      <main>
-        {/* Home / Intro */}
-        <section id="home" className="container px-6 py-20" data-reveal>
-          home
-          {/* <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-2xl md:text-3xl font-semibold">Human-friendly B2B software house</h2>
-            <p className="mt-4 text-muted-foreground">
-              Mindtoscreen partners with organizations to design, build, and maintain modern software systems.
-              We keep processes simple, communication clear, and delivery consistent.
-            </p>
-          </div> */}
-        </section>
-
-        {/* Workflow */}
-        <section id="workflow" className="container px-6 py-16" data-reveal>
-          workflow
-          {/* <h3 className="text-xl md:text-2xl font-semibold mb-8 text-center">Our Workflow</h3>
-          <div className="grid md:grid-cols-4 gap-6">
-            {[
-              { icon: <MessageSquare className="h-6 w-6" />, title: "Discussion", desc: "Understand goals & constraints." },
-              { icon: <ListChecks className="h-6 w-6" />, title: "Planning", desc: "Roadmap, scope, and timeline." },
-              { icon: <Code2 className="h-6 w-6" />, title: "Development", desc: "Deliver clean, testable code." },
-              { icon: <Rocket className="h-6 w-6" />, title: "Deployment", desc: "Ship, monitor, and iterate." },
-            ].map((s, i) => (
-              <Card key={i} className="transition-colors">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-3">
-                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-secondary">
-                      {s.icon}
-                    </span>
-                    {s.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="text-sm text-muted-foreground">{s.desc}</CardContent>
-              </Card>
-            ))}
-          </div> */}
-        </section>
-
-        {/* Services */}
-        <section id="services" className="container px-6 py-16" data-reveal>
-          services
-          {/* <h3 className="text-xl md:text-2xl font-semibold mb-8 text-center">Services</h3>
-          <div className="grid md:grid-cols-3 gap-6">
-            {[
-              { icon: <Laptop className="h-6 w-6" />, title: "Software Development", desc: "Web-based & Mobile-based solutions." },
-              { icon: <Layers3 className="h-6 w-6" />, title: "Integration System", desc: "Connect apps, services, and data." },
-              { icon: <Palette className="h-6 w-6" />, title: "UI/UX Design", desc: "Usable interfaces with modern aesthetics." },
-            ].map((s, i) => (
-              <Card key={i}>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-3">
-                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-secondary">
-                      {s.icon}
-                    </span>
-                    {s.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="text-sm text-muted-foreground">{s.desc}</CardContent>
-              </Card>
-            ))}
-          </div> */}
-        </section>
-
-        {/* Products */}
-        <section id="products" className="container px-6 py-16" data-reveal>
-          products
-          {/* <h3 className="text-xl md:text-2xl font-semibold mb-8 text-center">Products</h3>
-          <div className="grid md:grid-cols-3 gap-6">
-            {["HRIS", "eOffice", "Landing Page / Company Profile"].map((p) => (
-              <Card key={p}>
-                <CardHeader>
-                  <CardTitle>{p}</CardTitle>
-                </CardHeader>
-                <CardContent className="text-sm text-muted-foreground">
-                  Tailored to your operations with clean UX and scalable tech.
-                </CardContent>
-              </Card>
-            ))}
-          </div> */}
-        </section>
-
-        {/* Partners */}
-        <section id="partners" className="container px-6 py-16" data-reveal>
-          partners
-          {/* <h3 className="text-xl md:text-2xl font-semibold mb-8 text-center">Partners</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 items-center">
-            {["Satkomindo", "ClooserLook", "BADR", "Transtrack"].map((name) => (
-              <div
-                key={name}
-                className="flex h-20 items-center justify-center rounded-md bg-secondary text-sm font-semibold"
-                aria-label={`${name} logo`}
-              >
-                {name}
-              </div>
-            ))}
-          </div> */}
-        </section>
-
-        {/* Call To Action */}
-        <section id="contact" className="container px-6 py-20" data-reveal>
-          CTA
-          {/* <div className="mx-auto max-w-3xl">
-            <h3 className="text-xl md:text-2xl font-semibold mb-6 text-center">Let’s work together</h3>
-            <form onSubmit={handleSubmit} className="grid gap-4">
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="name">Name</Label>
-                  <Input id="name" name="name" autoComplete="name" />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input id="email" name="email" type="email" autoComplete="email" />
-                </div>
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="message">Message</Label>
-                <Textarea id="message" name="message" rows="5" />
-              </div>
-              <div className="mt-2 flex flex-wrap gap-4">
-                <Button type="submit">Send message</Button>
-                <Button asChild variant="secondary">
-                  <a href="https://wa.me/" target="_blank" rel="noreferrer noopener" aria-label="Open WhatsApp">
-                    Chat on WhatsApp
-                  </a>
-                </Button>
-              </div>
-            </form>
-          </div> */}
-        </section>
-
-        {/* About */}
-        <section id="about" className="container px-6 pb-24" data-reveal>
-          about us
-          {/* <div className="mx-auto max-w-3xl text-center">
-            <img
-              src={logoSrc}
-              alt="Mindtoscreen logo"
-              className="mx-auto h-12 w-auto mb-4"
-              loading="lazy"
-            />
-            <p className="text-sm text-muted-foreground">
-              Address: Jl. Example No. 123, Jakarta, Indonesia
-            </p>
-          </div> */}
-        </section>
+        {/* Defer the rest of the site until idle to avoid blocking first paint */}
+        {showRest && (
+          <Suspense fallback={null}>
+            <Services />
+            <Workflow />
+            <Products />
+            <Partners />
+            {/* <Contact handleSubmit={handleSubmit} /> */}
+            <About logoSrc={logoSrc} />
+          </Suspense>
+        )}
       </main>
 
-      <footer className="py-8 border-t">
-        <div className="container px-6 text-center text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Mindtoscreen. All rights reserved.
-        </div>
-      </footer>
+      {showRest && (
+        <>
+          {/* <footer className="py-8 border-t">
+            <div className="container px-6 text-center text-xs text-muted-foreground">
+              © {new Date().getFullYear()} Mindtoscreen. All rights reserved.
+            </div>
+          </footer> */}
+
+          <SectionNavigation />
+          <SectionNavigationBottom />
+          <ScrollToTop />
+        </>
+      )}
     </>
   );
 };
 
 export default Index;
+
+
+// <script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.48/build/spline-viewer.js"></script>
+// <spline-viewer url="https://prod.spline.design/6PmOuwwxp5E0mDNK/scene.splinecode"></spline-viewer>

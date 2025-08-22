@@ -10,62 +10,31 @@ export default function Header() {
       const script = document.createElement("script");
       script.id = "spline-viewer-script";
       script.type = "module";
-      script.src = "https://unpkg.com/@splinetool/viewer@1.10.44/build/spline-viewer.js";
+      script.src = "https://unpkg.com/@splinetool/viewer@1.10.48/build/spline-viewer.js";
       document.body.appendChild(script);
     }
   }, []);
 
   return (
-    <header className="relative min-h-[90vh] grid place-items-center overflow-hidden">
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+    <section id="home" className="relative min-h-screen opacity-90 place-items-center overflow-hidden">
+      
+      <div className="relative -z-10 w-[100%] h-[100%] flex items-center justify-center">
         <spline-viewer
-        url="https://prod.spline.design/jZSegny77gcr6Bp2/scene.splinecode"
+        url="https://prod.spline.design/t2usglXlAX7p0qjT/scene.splinecode"
         style={{
           width: "100%",
           height: "100%",
           border: "none",
-          opacity: 0.1
+          // opacity: 0.6
         }}
       ></spline-viewer>
       </div>
-
-      <div className="container px-6 py-20 md:py-28 text-center">
-        <img
-          src={logoSrc}
-          alt="Mindtoscreen logo"
-          loading="eager"
-          className="mx-auto mb-6 h-16 w-auto md:h-20"
-        />
-        <h1 className="mx-auto max-w-3xl text-3xl md:text-5xl font-semibold tracking-tight">
-          Mindtoscreen — Your Business Support System
-        </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-          Building reliable software with a human touch. Web, mobile, and integrations for growing businesses.
-        </p>
-        <div className="mt-8 flex items-center justify-center gap-4">
-          <Button asChild size="lg" className="hover-scale">
-            <a href="#contact" aria-label="Go to contact form">
-              Get in touch
-            </a>
-          </Button>
-          <Button asChild size="lg" variant="secondary" className="hover-scale">
-            <a
-              href="https://wa.me/"
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label="Chat on WhatsApp"
-            >
-              WhatsApp
-            </a>
-          </Button>
-        </div>
-      </div>
-    </header>
+    </section>
   );
 }
 
 
 {/* 
-<script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.44/build/spline-viewer.js"></script>
-<spline-viewer url="https://prod.spline.design/jZSegny77gcr6Bp2/scene.splinecode"></spline-viewer> 
+<script type="module" src="https://unpkg.com/@splinetool/viewer@1.10.48/build/spline-viewer.js"></script>
+<spline-viewer url="https://prod.spline.design/t2usglXlAX7p0qjT/scene.splinecode"></spline-viewer>
 */}

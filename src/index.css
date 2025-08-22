@@ -11,6 +11,16 @@ body {
   font-family: "General Sans", sans-serif;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y proximity;
+}
+
+section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
 @layer base {
   @font-face {
     font-family: "circular-web";
