@@ -3,27 +3,17 @@
 ## Description
 This project is a fully responsive and animated website built using **Next.js**. It showcases smooth animations, interactive elements, and optimized performance to create a seamless and visually engaging user experience.
 
-## Features
-- **Responsive Design:** Works perfectly across all devices, including mobile, tablet, and desktop.
-- **Smooth Animations:** Implemented using modern animation libraries for dynamic transitions and effects.
-- **Optimized Performance:** Built with Next.js for server-side rendering and fast page loads.
-- **Interactive UI/UX:** Designed with user engagement in mind.
-
 ## Tech Stack
 - **Frontend:** ReactJS, Next.js
 - **Styling:** CSS, TailwindCSS
-- **Animations:** Framer Motion / GSAP (or mention the library you used)
-- **Hosting:** Vercel
-
-## Live Demo
-Check out the live website: [Animated Website](https://animated-website-nextjs.vercel.app)
+- **Animations:** Framer Motion / GSAP / Spline (or mention the library you used)
 
 ## Installation
 To run this project locally, follow these steps:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/ahtishamkhan5678/Animated_Website_Nextjs.git
+   git clone https://github.com/fajarcandraaa/interactive-web.git
    ```
 
 2. Navigate to the project directory:
@@ -33,12 +23,12 @@ To run this project locally, follow these steps:
 
 3. Install dependencies:
    ```bash
-   npm install
+   pnpm install
    ```
 
 4. Start the development server:
    ```bash
-   npm run dev
+   pnpm run dev
    ```
 
 5. Open your browser and navigate to:
